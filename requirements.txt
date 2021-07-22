@@ -1,0 +1,6 @@
+jupyter-book
+pandas
+seaborn
+plotly
+scikit-learn
+

@@ -1,4 +1,4 @@
-# Jupyter Book for HR Analytics Project. 
+# [Jupyter Book for HR Analytics Project.](https://patilpushkarp.github.io/hra_book/)
 
 This repository contains the jupyter book for the HR Analytics Project. 
 

@@ -4,7 +4,13 @@
 format: jb-book
 root: intro
 parts:
+  - caption: Overview
+    chapters:
+    - file: files/overview.md
   - caption: Data Understanding
     chapters:
     - file: files/data_introduction.ipynb
     - file: files/eda_univariate.ipynb
+  - caption: References
+    chapters:
+    - file: references.md

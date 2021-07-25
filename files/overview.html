@@ -1,0 +1,382 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Overview of Human Resource Analytics &#8212; Human Resource Analytics</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e8e5499552300ddf5d7adccae7cc3b70.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Dataset Introduction" href="data_introduction.html" />
+    <link rel="prev" title="Human Resource Analytics" href="../intro.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      
+      <h1 class="site-logo" id="site-title">Human Resource Analytics</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro.html">
+   Human Resource Analytics
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Overview
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Overview of Human Resource Analytics
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data Understanding
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="data_introduction.html">
+   Dataset Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="eda_univariate.html">
+   Exploratory Data Analysis - Univariate Analysis
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  References
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../references.html">
+   Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/files/overview.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/executablebooks/jupyter-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Ffiles/overview.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-is-hr-analytics">
+   What is HR Analytics ?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-does-hr-analytics-work">
+   How does HR Analytics Work ?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-does-hr-analytics-work">
+   Why does HR Analytics work?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-are-the-outcomes-of-hr-analytics">
+   What are the outcomes of HR Analytics?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-moderating-factors-affect-hr-analytics-outcomes">
+   What moderating factors affect HR analytics outcomes?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#having-hr-professional-analytics-skills">
+     1. Having HR professional analytics skills.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#gaining-managerial-buy-in">
+     2. Gaining managerial buy-in
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#having-hr-information-technology">
+     3. Having HR information technology.
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="overview-of-human-resource-analytics">
+<h1>Overview of Human Resource Analytics<a class="headerlink" href="#overview-of-human-resource-analytics" title="Permalink to this headline">¶</a></h1>
+<p>Human resource management saw a great revolution since past two centuries. It all started with mere gut feelings and today organizations are utilizing analytics for the same. But analytics is still in its infancy stage. There is still a long way to go ahead to actually influence the processes which are used for the human resource. HR analytics is relaative new. The progress in the innovation for human resource management can partially be estimated from the number of publications in the mainstream management research journals and to the surprise there are only handful of them that are peer reviewed and covers some serious range of topics. HR analytics needs a guiding hand of innovation decision process. The decision to adopt any new innovation is a 5-step process: 1) knowledge, 2) persuasion, 3) decision, 4) implementation and 5) confirmation. Innovation decision process is an interesting activity which is used to gradually decrease the uncertainty about the innovation. The starting point of this process is gaining the right information at the right time.
+Innovation-decision process starts with the understanding of the concept of interest. Hence we can start our questioning with what.</p>
+<div class="section" id="what-is-hr-analytics">
+<h2>What is HR Analytics ?<a class="headerlink" href="#what-is-hr-analytics" title="Permalink to this headline">¶</a></h2>
+<p>HR anaytics can be broadly broken into 2 terms i.e. HR and analytics. Analytics is the process of interpretation of data patterns which can be ustilized for the purpose of decision-making and performance improvement <span id="id1">[<a class="reference internal" href="../references.html#id4">Lalwani, 2021</a>]</span>. It has to be an evidence-based approach for making better decisions. And well the term HR or human resource is used for any employee of an organization irrespective of any bias. <span id="id2">[<a class="reference internal" href="../references.html#id2">Marler and Boudreau, 2017</a>]</span> defines the HR analytics as follows:</p>
+<div class="admonition-human-resource-analytics admonition">
+<p class="admonition-title">Human Resource Analytics</p>
+<p>Human resource analytics can be defined as a human resource practice enabled by information technology that uses descriptive, analyses of data related to human resource processes, human capital, organizational performance, and external economic benchmarks to establish business impact and enable data-driven decision-making.</p>
+</div>
+<p>HR analaytics can range from systematic reporting of an array of HR metrics to the more sophisticated solutions based on <em>‘predictive models’</em> and *’what-if scenarios’. HR metrics are measure of key HRM outcomes that are efficiency, effectiveness or impact. Now mind that HR analytics is not merely HR metrics. It involves collection, manipulation, reporting and integration of data from various sources both internal &amp; external and utilization of an array of technologies in order to support people related decision. It also requires tight integration with functional data that is avaialable with the HR professionals for their respective organization. It connects HRM processes to employee attitudes and behaviours and ultimately to the business outcomes and organizational performance.</p>
+</div>
+<div class="section" id="how-does-hr-analytics-work">
+<h2>How does HR Analytics Work ?<a class="headerlink" href="#how-does-hr-analytics-work" title="Permalink to this headline">¶</a></h2>
+<p>There are various models and multi-step processes that are used in the HR analytics. Most of peer reviewed publications suggest some version of LAMP (abbreviation for Logic, Analytics, Measures and Processes) model. The elements of this model is the key to understanding the cause-effect relationship between HRM processes, strategic HRM and business outcomes. Decisions of leasders may be influenced by their mential biases around the human resource. Some may also retort to using retooling HR analyis and reporting using analogies to frameworks that are used in other management disciplines such as operations, finance and marketing.</p>
+</div>
+<div class="section" id="why-does-hr-analytics-work">
+<h2>Why does HR Analytics work?<a class="headerlink" href="#why-does-hr-analytics-work" title="Permalink to this headline">¶</a></h2>
+<p>Based on the theoretical views that are presented in the publications, HR analytics is associated with or can cause better performance and competitive advantage when it is unique and value producing. Moreover, companies which use a combination of pay for performance compensation, Human Capital Management (HCM) software, and HR analytics are more productive because this combination allows managers to both align incentives and monitor employee <a class="reference external" href="http://behaviour.It">behaviour.It</a> is a well known fact that companies needs to hire more motivated professionals for performing any task since they can outperform any other professional. The provided advantage due to the combination may place a company in a better position than their rivals.</p>
+</div>
+<div class="section" id="what-are-the-outcomes-of-hr-analytics">
+<h2>What are the outcomes of HR Analytics?<a class="headerlink" href="#what-are-the-outcomes-of-hr-analytics" title="Permalink to this headline">¶</a></h2>
+<p>There are very little number of publications that are available which hypothesize a string evidence for cause-effect between HR analytics and financial performance. It should be noted that as per the research, the savings from reducing HR administrative expenses are unlikely to have any impact on the business performace. Some of the mentions which can be found in the published paper include but not limited to:</p>
+<ol class="simple">
+<li><p>Lowes used HR analytics ti establish a link between HR processes, employee engagement and store performance. Through HR analytics, the organization was able to establish that highly engaged employees lead to 4% higher customer ticket sales.</p></li>
+<li><p>Google uses HR analytics to predict employee performance using their applicant database.</p></li>
+<li><p>Sysco uses HR analytics to establish causal links between work climate surveys, delivery driver employee satisfaction, customer loyalty and higher revenue.<br />
+A sample of 220 forms from Fortune 100 companies reported that only 15% of firms claimed HR analytics played a central role in determining or implementing HR strategy. The results of a survey of over 100 Fortune 500 companies suggesting less than a third of these companies have HR analytics that measures the relationship between HRM processes and people and business impact. This ratio is low considering that 70% of those companies use HR metrics to establish how efficient their HR processes are.
+With the above minds, it can be noticed that there is clear is disconnection between persuasive evidence of positive business impact and decisions to adopt and implement effective HR analytics.</p></li>
+</ol>
+</div>
+<div class="section" id="what-moderating-factors-affect-hr-analytics-outcomes">
+<h2>What moderating factors affect HR analytics outcomes?<a class="headerlink" href="#what-moderating-factors-affect-hr-analytics-outcomes" title="Permalink to this headline">¶</a></h2>
+<p>A review of the literature on HR analytics suggest 3 important requirements or moderators of HR analytics success:</p>
+<div class="section" id="having-hr-professional-analytics-skills">
+<h3>1. Having HR professional analytics skills.<a class="headerlink" href="#having-hr-professional-analytics-skills" title="Permalink to this headline">¶</a></h3>
+<p>Lack of analytics skills required for performing tasks related to HR processes in the most cited reason for why HR analytics is widely adopted. <span id="id3">[<a class="reference internal" href="../references.html#id3">Angrave, Charlwood, Kirkpatrick, Lawrence, and Stuart, 2016</a>]</span> highlighted the following concern:<br />
+<em>“If HR is not fully involved in the modelling process, there is significantly greater scope for models to be constructed in a way which fundamentally misunderstands the nature of human capital inputs into the processes of production and service deliver. Instead of recognizing the flexibility of labour; that productivity and performance change with skills, motivation and design of people-processes interactions, labour is modelled as a fixed cost that needs to be controlled. Unless analytics is embedded in a full and comprehensive analytical model, the more limited information available in dashboard formats may be misinterpreted by operational and financial managers with limited patience for or understanding of HR.”</em>
+It is necessary to bring together the talents from the finance, marketing, operations and engineering alongwith the HR leaders and functional experts to create a framework for HR analytics for improving the decision making process. The papers also identify the skills that are required for the HR professionals to better connect the organization’s business outcomes and are listed as follows:</p>
+<ol class="simple">
+<li><p>Basic and intermediate data analyses</p></li>
+<li><p>Basic and advanced multivariate modelling</p></li>
+<li><p>Data preparation</p></li>
+<li><p>Root cause analysis</p></li>
+<li><p>Survey design</p></li>
+<li><p>Quantitiative data collection and analysis</p></li>
+</ol>
+</div>
+<div class="section" id="gaining-managerial-buy-in">
+<h3>2. Gaining managerial buy-in<a class="headerlink" href="#gaining-managerial-buy-in" title="Permalink to this headline">¶</a></h3>
+<p>This requirement is more political in nature. The data-driven analyses which threatens are more likely to be disregarded and hence it is necessary for those practising HR analytics to build credibility and involve all the stakeholders from the beginning itself. Thus introduction of HR analytics involves acknowledging the role of resistence to change and resistance to abandoning the predominant role of intuition in manegerial decision-making.</p>
+</div>
+<div class="section" id="having-hr-information-technology">
+<h3>3. Having HR information technology.<a class="headerlink" href="#having-hr-information-technology" title="Permalink to this headline">¶</a></h3>
+<p>Based on the reviews of several articles, HR analytics without HRM software show no performance improvement. Accurate data collection, manipulation and storage is the key to the success of HR analytics.</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./files"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="../intro.html" title="previous page">Human Resource Analytics</a>
+    <a class='right-next' id="next-link" href="data_introduction.html" title="next page">Dataset Introduction</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Pushkar Patil<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

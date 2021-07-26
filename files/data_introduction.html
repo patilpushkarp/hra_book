@@ -318,7 +318,7 @@
       <td>...</td>
       <td>Low</td>
       <td>80</td>
-      <td>0</td>
+      <td>level_0</td>
       <td>8</td>
       <td>0</td>
       <td>Bad</td>
@@ -342,7 +342,7 @@
       <td>...</td>
       <td>Very High</td>
       <td>80</td>
-      <td>1</td>
+      <td>level_1</td>
       <td>10</td>
       <td>3</td>
       <td>Better</td>
@@ -366,7 +366,7 @@
       <td>...</td>
       <td>Medium</td>
       <td>80</td>
-      <td>0</td>
+      <td>level_0</td>
       <td>7</td>
       <td>3</td>
       <td>Better</td>
@@ -390,7 +390,7 @@
       <td>...</td>
       <td>High</td>
       <td>80</td>
-      <td>0</td>
+      <td>level_0</td>
       <td>8</td>
       <td>3</td>
       <td>Better</td>
@@ -414,7 +414,7 @@
       <td>...</td>
       <td>Very High</td>
       <td>80</td>
-      <td>1</td>
+      <td>level_1</td>
       <td>6</td>
       <td>3</td>
       <td>Better</td>
@@ -454,7 +454,7 @@ Data columns (total 35 columns):
  11  Gender                    1470 non-null   object
  12  HourlyRate                1470 non-null   int64 
  13  JobInvolvement            1470 non-null   object
- 14  JobLevel                  1470 non-null   int64 
+ 14  JobLevel                  1470 non-null   object
  15  JobRole                   1470 non-null   object
  16  JobSatisfaction           1470 non-null   object
  17  MaritalStatus             1470 non-null   object
@@ -467,7 +467,7 @@ Data columns (total 35 columns):
  24  PerformanceRating         1470 non-null   object
  25  RelationshipSatisfaction  1470 non-null   object
  26  StandardHours             1470 non-null   int64 
- 27  StockOptionLevel          1470 non-null   int64 
+ 27  StockOptionLevel          1470 non-null   object
  28  TotalWorkingYears         1470 non-null   int64 
  29  TrainingTimesLastYear     1470 non-null   int64 
  30  WorkLifeBalance           1470 non-null   object
@@ -475,7 +475,7 @@ Data columns (total 35 columns):
  32  YearsInCurrentRole        1470 non-null   int64 
  33  YearsSinceLastPromotion   1470 non-null   int64 
  34  YearsWithCurrManager      1470 non-null   int64 
-dtypes: int64(19), object(16)
+dtypes: int64(17), object(18)
 memory usage: 402.1+ KB
 </pre></div>
 </div>
@@ -596,7 +596,7 @@ Almost all the columns are self-explainatory but still we will look at each colu
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Drop unnecessary columns</span>
-<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;EmployeeCount&#39;</span><span class="p">,</span> <span class="s1">&#39;Over18&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;EmployeeCount&#39;</span><span class="p">,</span> <span class="s1">&#39;Over18&#39;</span><span class="p">,</span> <span class="s1">&#39;StandardHours&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -613,6 +613,7 @@ Almost all the columns are self-explainatory but still we will look at each colu
 <span class="c1"># Remove the colums</span>
 <span class="n">categorical_columns</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;Over18&#39;</span><span class="p">)</span>
 <span class="n">numerical_columns</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;EmployeeCount&#39;</span><span class="p">)</span>
+<span class="n">numerical_columns</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;StandardHours&#39;</span><span class="p">)</span>
 
 <span class="c1"># Write the new columns back to the static file</span>
 <span class="n">statics</span><span class="p">[</span><span class="s1">&#39;categorical_columns&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">categorical_columns</span>

@@ -49,6 +49,8 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Bibliography" href="../references.html" />
@@ -288,39 +290,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">folders</span><span class="o">/</span><span class="n">zl</span><span class="o">/</span><span class="n">bqtzmz3s0xl5_ddgbjsqxsww0000gn</span><span class="o">/</span><span class="n">T</span><span class="o">/</span><span class="n">ipykernel_1471</span><span class="o">/</span><span class="mf">1096279300.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Separate out the dataframe intro numerical and categorical dataframe</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">num_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">numerical_columns</span><span class="p">]</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">cat_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">categorical_columns</span><span class="p">]</span>
-
-<span class="nn">~/miniforge3/envs/hra/lib/python3.8/site-packages/pandas/core/frame.py</span> in <span class="ni">__getitem__</span><span class="nt">(self, key)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3459</span>             <span class="k">if</span> <span class="n">is_iterator</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">3460</span>                 <span class="n">key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="ne">-&gt; </span><span class="mi">3461</span>             <span class="n">indexer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="o">.</span><span class="n">_get_listlike_indexer</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-<span class="g g-Whitespace">   </span><span class="mi">3462</span> 
-<span class="g g-Whitespace">   </span><span class="mi">3463</span>         <span class="c1"># take() does not accept boolean indexers</span>
-
-<span class="nn">~/miniforge3/envs/hra/lib/python3.8/site-packages/pandas/core/indexing.py</span> in <span class="ni">_get_listlike_indexer</span><span class="nt">(self, key, axis)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1312</span>             <span class="n">keyarr</span><span class="p">,</span> <span class="n">indexer</span><span class="p">,</span> <span class="n">new_indexer</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">_reindex_non_unique</span><span class="p">(</span><span class="n">keyarr</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1313</span> 
-<span class="ne">-&gt; </span><span class="mi">1314</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_read_indexer</span><span class="p">(</span><span class="n">keyarr</span><span class="p">,</span> <span class="n">indexer</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1315</span> 
-<span class="g g-Whitespace">   </span><span class="mi">1316</span>         <span class="k">if</span> <span class="n">needs_i8_conversion</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span>
-
-<span class="nn">~/miniforge3/envs/hra/lib/python3.8/site-packages/pandas/core/indexing.py</span> in <span class="ni">_validate_read_indexer</span><span class="nt">(self, key, indexer, axis)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1375</span> 
-<span class="g g-Whitespace">   </span><span class="mi">1376</span>             <span class="n">not_found</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ensure_index</span><span class="p">(</span><span class="n">key</span><span class="p">)[</span><span class="n">missing_mask</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
-<span class="ne">-&gt; </span><span class="mi">1377</span>             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">not_found</span><span class="si">}</span><span class="s2"> not in index&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1378</span> 
-<span class="g g-Whitespace">   </span><span class="mi">1379</span> 
-
-<span class="ne">KeyError</span>: &quot;[&#39;EmployeeCount&#39;] not in index&quot;
-</pre></div>
-</div>
-</div>
 </div>
 <div class="section" id="numerical-columns">
 <h2>Numerical Columns<a class="headerlink" href="#numerical-columns" title="Permalink to this headline">¶</a></h2>
@@ -357,7 +326,6 @@
       <th>Age</th>
       <th>DailyRate</th>
       <th>DistanceFromHome</th>
-      <th>EmployeeCount</th>
       <th>EmployeeNumber</th>
       <th>HourlyRate</th>
       <th>JobLevel</th>
@@ -365,7 +333,6 @@
       <th>MonthlyRate</th>
       <th>NumCompaniesWorked</th>
       <th>PercentSalaryHike</th>
-      <th>StandardHours</th>
       <th>StockOptionLevel</th>
       <th>TotalWorkingYears</th>
       <th>TrainingTimesLastYear</th>
@@ -381,7 +348,6 @@
       <td>1470.000000</td>
       <td>1470.000000</td>
       <td>1470.000000</td>
-      <td>1470.0</td>
       <td>1470.000000</td>
       <td>1470.000000</td>
       <td>1470.000000</td>
@@ -389,7 +355,6 @@
       <td>1470.000000</td>
       <td>1470.000000</td>
       <td>1470.000000</td>
-      <td>1470.0</td>
       <td>1470.000000</td>
       <td>1470.000000</td>
       <td>1470.000000</td>
@@ -403,7 +368,6 @@
       <td>36.923810</td>
       <td>802.485714</td>
       <td>9.192517</td>
-      <td>1.0</td>
       <td>1024.865306</td>
       <td>65.891156</td>
       <td>2.063946</td>
@@ -411,7 +375,6 @@
       <td>14313.103401</td>
       <td>2.693197</td>
       <td>15.209524</td>
-      <td>80.0</td>
       <td>0.793878</td>
       <td>11.279592</td>
       <td>2.799320</td>
@@ -425,7 +388,6 @@
       <td>9.135373</td>
       <td>403.509100</td>
       <td>8.106864</td>
-      <td>0.0</td>
       <td>602.024335</td>
       <td>20.329428</td>
       <td>1.106940</td>
@@ -433,7 +395,6 @@
       <td>7117.786044</td>
       <td>2.498009</td>
       <td>3.659938</td>
-      <td>0.0</td>
       <td>0.852077</td>
       <td>7.780782</td>
       <td>1.289271</td>
@@ -447,7 +408,6 @@
       <td>18.000000</td>
       <td>102.000000</td>
       <td>1.000000</td>
-      <td>1.0</td>
       <td>1.000000</td>
       <td>30.000000</td>
       <td>1.000000</td>
@@ -455,7 +415,6 @@
       <td>2094.000000</td>
       <td>0.000000</td>
       <td>11.000000</td>
-      <td>80.0</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -469,7 +428,6 @@
       <td>30.000000</td>
       <td>465.000000</td>
       <td>2.000000</td>
-      <td>1.0</td>
       <td>491.250000</td>
       <td>48.000000</td>
       <td>1.000000</td>
@@ -477,7 +435,6 @@
       <td>8047.000000</td>
       <td>1.000000</td>
       <td>12.000000</td>
-      <td>80.0</td>
       <td>0.000000</td>
       <td>6.000000</td>
       <td>2.000000</td>
@@ -491,7 +448,6 @@
       <td>36.000000</td>
       <td>802.000000</td>
       <td>7.000000</td>
-      <td>1.0</td>
       <td>1020.500000</td>
       <td>66.000000</td>
       <td>2.000000</td>
@@ -499,7 +455,6 @@
       <td>14235.500000</td>
       <td>2.000000</td>
       <td>14.000000</td>
-      <td>80.0</td>
       <td>1.000000</td>
       <td>10.000000</td>
       <td>3.000000</td>
@@ -513,7 +468,6 @@
       <td>43.000000</td>
       <td>1157.000000</td>
       <td>14.000000</td>
-      <td>1.0</td>
       <td>1555.750000</td>
       <td>83.750000</td>
       <td>3.000000</td>
@@ -521,7 +475,6 @@
       <td>20461.500000</td>
       <td>4.000000</td>
       <td>18.000000</td>
-      <td>80.0</td>
       <td>1.000000</td>
       <td>15.000000</td>
       <td>3.000000</td>
@@ -535,7 +488,6 @@
       <td>60.000000</td>
       <td>1499.000000</td>
       <td>29.000000</td>
-      <td>1.0</td>
       <td>2068.000000</td>
       <td>100.000000</td>
       <td>5.000000</td>
@@ -543,7 +495,6 @@
       <td>26999.000000</td>
       <td>9.000000</td>
       <td>25.000000</td>
-      <td>80.0</td>
       <td>3.000000</td>
       <td>40.000000</td>
       <td>6.000000</td>
@@ -556,7 +507,75 @@
 </table>
 </div></div></div>
 </div>
-<p>Some of the highly skewed columns include</p>
+<p>From the above table, it can be observed that some of the highly skewed columns include <span class="math notranslate nohighlight">\(MonthlyIncome\)</span>, <span class="math notranslate nohighlight">\(YearsAtCompany\)</span>, and <span class="math notranslate nohighlight">\(YearsSinceLastPromotion\)</span>. More information can be obtained by observing the distribution of all the variables.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create interactive plots</span>
+
+<span class="c1"># Create a widget for selecting column</span>
+<span class="n">numcols</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">options</span> <span class="o">=</span> <span class="n">numerical_columns</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">numerical_columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Numerial columns&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create plotly trace of histogram</span>
+<span class="n">num_trace1</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Histogram</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">num_df</span><span class="p">[</span><span class="n">numerical_columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> 
+                         <span class="n">histnorm</span><span class="o">=</span><span class="s1">&#39;probability&#39;</span><span class="p">,</span> 
+                         <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Distribution&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create plotly trace of boc plot</span>
+<span class="n">num_trace2</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">num_df</span><span class="p">[</span><span class="n">numerical_columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> 
+                   <span class="n">boxpoints</span><span class="o">=</span><span class="s1">&#39;outliers&#39;</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Quartiles representation&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create a widget for histogram</span>
+<span class="n">ng1</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">FigureWidget</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">num_trace1</span><span class="p">],</span>
+                     <span class="n">layout</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span>
+                         <span class="n">title</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">&#39;Distribution of features&#39;</span><span class="p">)</span>
+                     <span class="p">))</span>
+
+<span class="c1"># Create a widget for box plot</span>
+<span class="n">ng2</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">FigureWidget</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">num_trace2</span><span class="p">],</span>
+                     <span class="n">layout</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span>
+                         <span class="n">title</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">&#39;Quartiles representation of features&#39;</span><span class="p">)</span>
+                     <span class="p">))</span>
+
+<span class="c1"># Create a function for observing the change in the selection</span>
+<span class="k">def</span> <span class="nf">num_response</span><span class="p">(</span><span class="n">change</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to update the values in the graph based on the selected column.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">ng1</span><span class="o">.</span><span class="n">batch_update</span><span class="p">():</span>
+        <span class="n">ng1</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">num_df</span><span class="p">[</span><span class="n">numcols</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+        <span class="n">ng1</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Distribution of &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">numcols</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; variable&#39;</span>
+    
+    <span class="k">with</span> <span class="n">ng2</span><span class="o">.</span><span class="n">batch_update</span><span class="p">():</span>
+        <span class="n">ng2</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">num_df</span><span class="p">[</span><span class="n">numcols</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+        <span class="n">ng2</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">numcols</span><span class="o">.</span><span class="n">value</span>
+    
+<span class="n">numcols</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">num_response</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+
+<span class="n">num_container</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">VBox</span><span class="p">([</span><span class="n">numcols</span><span class="p">,</span> <span class="n">ng1</span><span class="p">,</span> <span class="n">ng2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">num_container</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major": 2, "version_minor": 0, "model_id": "0e790d47cefc4799a0ea914161d70c49"}
+</script></div>
+</div>
+<p>From the above distributions following observations can be noted:</p>
+<ul class="simple">
+<li><p>The average age of the participants is 37 years while the median age is rests at 36 years of age. We have representation of almost all sorts of working population right from the age of 18 to the age of 60. There are no outliers that exist in the dataset as far as age is concerned.</p></li>
+<li><p>Variables that approximately follows uniform distribution are variables representing daily rate, hourly rate with exception for values greater than 100, and monthly rate.</p></li>
+<li><p>There are variables which are positively skewed that includes distance from home, monthly income, number of companies worked, percentage hike, total working years, and years at a company.</p></li>
+<li><p>There are 2 variables which have double peaks. The variables represents years in current role and years since last promotion.</p></li>
+<li><p>Only 1 variable representing number of training in last year seems to be following normal distribution.</p></li>
+<li><p>There are outliers present in variables such as monthly income, number of companies worked, total working years, number of trainings in last year, years at company, years in current role, years since last promotion, and years with current manager. In order to decide whether to keep or remove the outliers a more closer look into variables are required.</p></li>
+</ul>
 </div>
 </div>
 

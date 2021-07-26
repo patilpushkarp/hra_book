@@ -11,6 +11,7 @@ parts:
     chapters:
     - file: files/data_introduction.ipynb
     - file: files/eda_univariate.ipynb
+    - file: files/eda_multivariate.ipynb
   - caption: References
     chapters:
     - file: references.md

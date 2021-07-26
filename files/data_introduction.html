@@ -613,6 +613,13 @@ Almost all the columns are self-explainatory but still we will look at each colu
 <span class="c1"># Remove the colums</span>
 <span class="n">categorical_columns</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;Over18&#39;</span><span class="p">)</span>
 <span class="n">numerical_columns</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;EmployeeCount&#39;</span><span class="p">)</span>
+
+<span class="c1"># Write the new columns back to the static file</span>
+<span class="n">statics</span><span class="p">[</span><span class="s1">&#39;categorical_columns&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">categorical_columns</span>
+<span class="n">statics</span><span class="p">[</span><span class="s1">&#39;numerical_columns&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numerical_columns</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./../../../data/statics.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">statics</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

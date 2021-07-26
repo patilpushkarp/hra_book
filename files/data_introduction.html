@@ -592,6 +592,7 @@ Almost all the columns are self-explainatory but still we will look at each colu
 </tr>
 </tbody>
 </table>
+<p>It is better to remove columns which does not required and does not contribute to the information gain from the dataset.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Drop unnecessary columns</span>
@@ -600,10 +601,26 @@ Almost all the columns are self-explainatory but still we will look at each colu
 </div>
 </div>
 </div>
+<p>Remove the dropped columns from the list of numerical and categorical columns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the static lists</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./../../../data/statics.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">statics</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="n">categorical_columns</span> <span class="o">=</span> <span class="n">statics</span><span class="p">[</span><span class="s1">&#39;categorical_columns&#39;</span><span class="p">]</span>
+<span class="n">numerical_columns</span> <span class="o">=</span> <span class="n">statics</span><span class="p">[</span><span class="s1">&#39;numerical_columns&#39;</span><span class="p">]</span>
+
+<span class="c1"># Remove the colums</span>
+<span class="n">categorical_columns</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;Over18&#39;</span><span class="p">)</span>
+<span class="n">numerical_columns</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;EmployeeCount&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save the processed data</span>
-<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;./../../../data/clenaed_data.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;./../../../data/cleaned_data.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

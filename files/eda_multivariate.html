@@ -232,6 +232,36 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#correlation">
+   Correlation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#relationship-with-target-variable">
+   Relationship with target variable
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#numerical">
+     Numerical
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#categorical">
+     Categorical
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -244,9 +274,179 @@
 <h1>Exploratory Data Anlysis - Multivariate Analysis<a class="headerlink" href="#exploratory-data-anlysis-multivariate-analysis" title="Permalink to this headline">¶</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">import</span> <span class="nn">plotly.figure_factory</span> <span class="k">as</span> <span class="nn">ff</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">widgets</span>
 </pre></div>
 </div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./../../../data/cleaned_data.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load lists of numerical and categorical columns from the static file</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./../../../data/statics.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">statics</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="n">categorical_columns</span> <span class="o">=</span> <span class="n">statics</span><span class="p">[</span><span class="s1">&#39;categorical_columns&#39;</span><span class="p">]</span>
+<span class="n">numerical_columns</span> <span class="o">=</span> <span class="n">statics</span><span class="p">[</span><span class="s1">&#39;numerical_columns&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Separate out the dataframe intro numerical and categorical dataframe</span>
+<span class="n">num_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">numerical_columns</span><span class="p">]</span>
+<span class="n">cat_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">categorical_columns</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="correlation">
+<h2>Correlation<a class="headerlink" href="#correlation" title="Permalink to this headline">¶</a></h2>
+<p>For multivariate, analysis we will begin with correlation. It should be noted that correlation coefficients can only be calculated for numerical variables. It is meaningless to use it for categorical variables. The correlation coefficients can only tell us whether 2 variables are moving together or in opposite direction but in no way it can covey us the about the cause-effect relationship between variables.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the correlation coefficients</span>
+<span class="n">pearson_corr</span> <span class="o">=</span> <span class="n">num_df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+<span class="n">spearman_corr</span> <span class="o">=</span> <span class="n">num_df</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;spearman&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">pearson_corr</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>From the above chart it can be noted that there are no variables with extreme negative correlations.<br />
+Total working years is highly correlated with age, monthly income, and years at company. It would be convenient for us to remove this variable but I would like to take this decision while feature selection.
+Years at current company, years in current role. years since last promotion and years with current manager are all highly correlated with each other.</p>
+<p>Pearson correlation gives us linear correlation while Spearman correlation gives us non-linear correation. Repeating the above activity with Spearman correlation gives -</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">spearman_corr</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The picture doesn’t change. Hence it can safely concluded that features are only linearly correlated.</p>
+<p>To understand the correlated features more closely, let us plot the pair plots for them.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sub_df1</span> <span class="o">=</span> <span class="n">num_df</span><span class="p">[[</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;TotalWorkingYears&#39;</span><span class="p">,</span> <span class="s1">&#39;MonthlyIncome&#39;</span><span class="p">,</span> <span class="s1">&#39;YearsAtCompany&#39;</span><span class="p">,</span> <span class="s1">&#39;YearsInCurrentRole&#39;</span><span class="p">,</span> <span class="s1">&#39;YearsSinceLastPromotion&#39;</span><span class="p">,</span> <span class="s1">&#39;YearsWithCurrManager&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter_matrix</span><span class="p">(</span><span class="n">sub_df1</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">1400</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">1400</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Some people start their job at a later stage, like in their 40s and 50s. But as such age and total working years do show positive corelation. Years at a company, years with curernt manager and years in current role all have high positive corellation amongst them.</p>
+</div>
+<div class="section" id="relationship-with-target-variable">
+<h2>Relationship with target variable<a class="headerlink" href="#relationship-with-target-variable" title="Permalink to this headline">¶</a></h2>
+<p>Let us gauge the available variables with respect to the attrition one by one.</p>
+<p>We begin our analysis with the one of the most important factor about how satisifed an employee is in the company that is money.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Attrition&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No     1233
+Yes     237
+Name: Attrition, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Divide the data based on attrition</span>
+<span class="n">attr</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Attrition&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Yes&#39;</span><span class="p">]</span>
+<span class="n">nattr</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Attrition&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;No&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="numerical">
+<h3>Numerical<a class="headerlink" href="#numerical" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create interactive plots</span>
+
+<span class="c1"># Create widget to select columns</span>
+<span class="n">numcols3</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">numerical_columns</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">numerical_columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Numerical columns&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create figure for the plot</span>
+<span class="n">trace1</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Histogram</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">attr</span><span class="p">[</span><span class="n">numerical_columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">histnorm</span><span class="o">=</span><span class="s1">&#39;probability&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Attrition - Yes&#39;</span><span class="p">)</span>
+<span class="n">trace2</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Histogram</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">nattr</span><span class="p">[</span><span class="n">numerical_columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">histnorm</span><span class="o">=</span><span class="s1">&#39;probability&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Attrition - No&#39;</span><span class="p">)</span>
+<span class="c1"># Create widget for the plot</span>
+<span class="n">ng3</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">FigureWidget</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">trace1</span><span class="p">,</span> <span class="n">trace2</span><span class="p">],</span>
+                      <span class="n">layout</span><span class="o">=</span><span class="n">go</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">barmode</span><span class="o">=</span><span class="s1">&#39;overlay&#39;</span><span class="p">))</span>
+
+<span class="c1"># Create function to respond to changes</span>
+<span class="k">def</span> <span class="nf">num_response3</span><span class="p">(</span><span class="n">change</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to change the values based on selection of column&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">ng3</span><span class="o">.</span><span class="n">batch_update</span><span class="p">():</span>
+        <span class="n">ng3</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">attr</span><span class="p">[</span><span class="n">numcols3</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+        <span class="n">ng3</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">nattr</span><span class="p">[</span><span class="n">numcols3</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+        <span class="n">ng3</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">barmode</span> <span class="o">=</span> <span class="s1">&#39;overlay&#39;</span>
+        <span class="n">ng3</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">numcols3</span><span class="o">.</span><span class="n">value</span>
+
+<span class="c1"># Observe the change in the dropdown and trigger the function on change</span>
+<span class="n">numcols3</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">num_response3</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+
+<span class="n">num_container2</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">VBox</span><span class="p">([</span><span class="n">numcols3</span><span class="p">,</span> <span class="n">ng3</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">num_container2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major": 2, "version_minor": 0, "model_id": "5cca26866ff340b6a928a648e5a3be3f"}
+</script></div>
+</div>
+<p>The probability that people will shift is much more higher for the people between age 20 to 30 than other age groups. People above 30 are very less likely to shift. Distance from home, hourly rate, monthly rate, percentage salary hike, number of times employee was trainined in the last year and years since last promotion does not seem to be significant factors for the decision to leave the company. Employees who exist in the lower bands of monthly salary are more likely to leave the company than their higher bands couterparts. People who have worked in less than or equal to 4 companies are less likely to shift than the people who have worked in more than 4 companies. People with less number of years of working experience and less number of years in the current company are more likely to shift. If people stay in current role for more number of years then the probability that they will leave becomes less then the probability to not leave. If people work under one manager for longer period of time then people are less likely to leave.</p>
+</div>
+<div class="section" id="categorical">
+<h3>Categorical<a class="headerlink" href="#categorical" title="Permalink to this headline">¶</a></h3>
+<p>We will repeat the above exercise with categorical variables.</p>
 </div>
 </div>
 </div>

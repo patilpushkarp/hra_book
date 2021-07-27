@@ -8,7 +8,7 @@ author: Pushkar Patil
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
 execute:
-  execute_notebooks: off
+  execute_notebooks: cache
 
 # Define the name of the latex output file for PDF builds
 latex:
@@ -22,13 +22,15 @@ bibtex_bibfiles:
 # In _config.yml
 sphinx:
   config:
+    html_js_files:
+    - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js
     bibtex_reference_style: author_year
 
 # To run plotly plots
-sphinx:
-  config:
-    html_js_files:
-    - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js
+# sphinx:
+#   config:
+#     html_js_files:
+#     - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js
 
 # Information about where the book exists on the web
 repository:

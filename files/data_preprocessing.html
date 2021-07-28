@@ -279,6 +279,7 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OrdinalEncoder</span><span class="p">,</span> <span class="n">OneHotEncoder</span>
 </pre></div>
 </div>
 </div>
@@ -369,8 +370,52 @@ X' = \frac{X - X_{min}}{X_{max} - X_{min}}
 <p>As far as categorical columns are concerned, they need to be represented by numbers so that machines can process the data. For our data, some columns need ordinal encoding while others need one-hot encoding.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ordinal_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Education&#39;</span><span class="p">,</span> <span class="s1">&#39;EnvironmentSatisfaction&#39;</span><span class="p">,</span> <span class="s1">&#39;JobInvolvement&#39;</span><span class="p">,</span> <span class="s1">&#39;JobLevel&#39;</span><span class="p">,</span> <span class="s1">&#39;JobSatisfaction&#39;</span><span class="p">,</span> <span class="s1">&#39;Overtime&#39;</span><span class="p">,</span> <span class="s1">&#39;PerformanceRating&#39;</span><span class="p">,</span> <span class="s1">&#39;RelationshipSatisfaction&#39;</span><span class="p">,</span> <span class="s1">&#39;StockOptionLevel&#39;</span><span class="p">,</span> <span class="s1">&#39;WorkLifeBalance&#39;</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Separate the columns into ordinal and one hot columns</span>
+<span class="n">ordinal_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Education&#39;</span><span class="p">,</span> <span class="s1">&#39;EnvironmentSatisfaction&#39;</span><span class="p">,</span> <span class="s1">&#39;JobInvolvement&#39;</span><span class="p">,</span> <span class="s1">&#39;JobLevel&#39;</span><span class="p">,</span> <span class="s1">&#39;JobSatisfaction&#39;</span><span class="p">,</span> <span class="s1">&#39;OverTime&#39;</span><span class="p">,</span> <span class="s1">&#39;PerformanceRating&#39;</span><span class="p">,</span> <span class="s1">&#39;RelationshipSatisfaction&#39;</span><span class="p">,</span> <span class="s1">&#39;StockOptionLevel&#39;</span><span class="p">,</span> <span class="s1">&#39;WorkLifeBalance&#39;</span><span class="p">]</span>
 <span class="n">one_hot_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BusinessTravel&#39;</span><span class="p">,</span> <span class="s1">&#39;Department&#39;</span><span class="p">,</span> <span class="s1">&#39;EducationField&#39;</span><span class="p">,</span> <span class="s1">&#39;Gender&#39;</span><span class="p">,</span> <span class="s1">&#39;JobRole&#39;</span><span class="p">,</span> <span class="s1">&#39;MaritalStatus&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ordinal_list</span> <span class="o">=</span> <span class="p">[]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In order to encode columns with some order, we need to first declare which will help the algorithm to encode.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ordinal_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;Below College&#39;</span><span class="p">,</span> <span class="s1">&#39;College&#39;</span><span class="p">,</span> <span class="s1">&#39;Bachelor&#39;</span><span class="p">,</span> <span class="s1">&#39;Master&#39;</span><span class="p">,</span> <span class="s1">&#39;Doctor&#39;</span><span class="p">])</span> <span class="c1"># Education</span>
+<span class="n">ordinal_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;Low&#39;</span><span class="p">,</span> <span class="s1">&#39;Medium&#39;</span><span class="p">,</span> <span class="s1">&#39;High&#39;</span><span class="p">,</span> <span class="s1">&#39;Very High&#39;</span><span class="p">])</span> <span class="c1"># EnvironmentSatisfaction</span>
+<span class="n">ordinal_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;Low&#39;</span><span class="p">,</span> <span class="s1">&#39;Medium&#39;</span><span class="p">,</span> <span class="s1">&#39;High&#39;</span><span class="p">,</span> <span class="s1">&#39;Very High&#39;</span><span class="p">])</span> <span class="c1"># JobInvolvement</span>
+<span class="n">ordinal_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;level_1&#39;</span><span class="p">,</span> <span class="s1">&#39;level_2&#39;</span><span class="p">,</span> <span class="s1">&#39;level_3&#39;</span><span class="p">,</span> <span class="s1">&#39;level_4&#39;</span><span class="p">,</span> <span class="s1">&#39;level_5&#39;</span><span class="p">])</span> <span class="c1">#JobLevel</span>
+<span class="n">ordinal_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;Low&#39;</span><span class="p">,</span> <span class="s1">&#39;Medium&#39;</span><span class="p">,</span> <span class="s1">&#39;High&#39;</span><span class="p">,</span> <span class="s1">&#39;Very High&#39;</span><span class="p">])</span> <span class="c1"># JobSatisfaction</span>
+<span class="n">ordinal_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">])</span> <span class="c1"># OverTime</span>
+<span class="n">ordinal_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;Excellent&#39;</span><span class="p">,</span> <span class="s1">&#39;Outstanding&#39;</span><span class="p">])</span> <span class="c1"># PerformanceRating</span>
+<span class="n">ordinal_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;Low&#39;</span><span class="p">,</span> <span class="s1">&#39;Medium&#39;</span><span class="p">,</span> <span class="s1">&#39;High&#39;</span><span class="p">,</span> <span class="s1">&#39;Very High&#39;</span><span class="p">])</span> <span class="c1"># RelationshipSatisfaction</span>
+<span class="n">ordinal_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;level_0&#39;</span><span class="p">,</span> <span class="s1">&#39;level_1&#39;</span><span class="p">,</span> <span class="s1">&#39;level_2&#39;</span><span class="p">,</span> <span class="s1">&#39;level_3&#39;</span><span class="p">])</span> <span class="c1"># JobInvolvement</span>
+<span class="n">ordinal_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;Bad&#39;</span><span class="p">,</span> <span class="s1">&#39;Good&#39;</span><span class="p">,</span> <span class="s1">&#39;Better&#39;</span><span class="p">,</span> <span class="s1">&#39;Best&#39;</span><span class="p">])</span> <span class="c1"># WorkLifeBalance</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply Ordinal Encoder</span>
+<span class="n">onc</span> <span class="o">=</span> <span class="n">OrdinalEncoder</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="n">ordinal_list</span><span class="p">)</span>
+<span class="n">ordinal_cat_df_train</span> <span class="o">=</span> <span class="n">onc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">cat_df_train</span><span class="p">[</span><span class="n">ordinal_columns</span><span class="p">])</span>
+<span class="n">ordinal_cat_df_test</span> <span class="o">=</span> <span class="n">onc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">cat_df_test</span><span class="p">[</span><span class="n">ordinal_columns</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ohc</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">()</span>
+<span class="n">onehot_cat_df_train</span> <span class="o">=</span> <span class="n">ohc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">cat_df_train</span><span class="p">[</span><span class="n">one_hot_columns</span><span class="p">])</span>
+<span class="n">onehot_cat_df_test</span> <span class="o">=</span> <span class="n">ohc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">cat_df_test</span><span class="p">[</span><span class="n">one_hot_columns</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>

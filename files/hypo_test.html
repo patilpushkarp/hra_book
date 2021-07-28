@@ -49,6 +49,8 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -207,11 +209,63 @@
 
             <!-- Launch buttons -->
 
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/docs/files/hypo_test.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
         </div>
 
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Hypothesis tests
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#claim-1-difference-in-monthly-salary">
+   Claim 1 - Difference in monthly salary
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#claim-2-difference-in-percentage-of-hike-in-salary">
+     Claim 2 - Difference in percentage of hike in salary”
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#claim-3-frequent-travelling">
+     Claim 3 - Frequent travelling
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#claim-4-overtime">
+     Claim 4 - Overtime
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -222,25 +276,261 @@
                 
   <div class="section" id="hypothesis-tests">
 <h1>Hypothesis tests<a class="headerlink" href="#hypothesis-tests" title="Permalink to this headline">¶</a></h1>
+<p>In this notebook, we will be performing hypothesis tests to valiate certain speculations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;MonthlyIncome&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Attrition&#39;</span><span class="p">,</span> <span class="n">histnorm</span><span class="o">=</span><span class="s1">&#39;probability&#39;</span><span class="p">,</span> <span class="n">marginal</span><span class="o">=</span><span class="s1">&#39;rug&#39;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the required packages</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">ttest_ind</span><span class="p">,</span> <span class="n">chi2_contingency</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>At lower incomes the probability of attrition is higher while the trend reverses at the higher range of salaries. Above the value of 11k, the proabability see a sharp decrease. After 14k, the probability of attrition literally diminishes to 0 before picking up lower values at 19k to 20k.
-Another parameter which is considered to be significant is the percentage hike in the salary.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;PercentSalaryHike&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Attrition&#39;</span><span class="p">,</span> <span class="n">marginal</span><span class="o">=</span><span class="s1">&#39;rug&#39;</span><span class="p">,</span> <span class="n">histnorm</span><span class="o">=</span><span class="s1">&#39;probability&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./../../../data/cleaned_data.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load lists of numerical and categorical columns from the static file</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./../../../data/statics.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">statics</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="n">categorical_columns</span> <span class="o">=</span> <span class="n">statics</span><span class="p">[</span><span class="s1">&#39;categorical_columns&#39;</span><span class="p">]</span>
+<span class="n">numerical_columns</span> <span class="o">=</span> <span class="n">statics</span><span class="p">[</span><span class="s1">&#39;numerical_columns&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Seggregate attrition member groups</span>
+<span class="n">attr</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Attrition&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Yes&#39;</span><span class="p">]</span>
+<span class="n">nattr</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Attrition&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;No&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Followig are the some speculations are we are going to consider for our analysis:</p>
+<ol class="simple">
+<li><p>There is difference between mean salaries within people who leave the company and people who stay.</p></li>
+<li><p>There is difference between mean percentage hike for the two above mentioned groups.</p></li>
+<li><p>Frequent travelling for employees results in attrition.</p></li>
+<li><p>Overtime results in attrition.</p></li>
+</ol>
+</div>
+<div class="section" id="claim-1-difference-in-monthly-salary">
+<h1>Claim 1 - Difference in monthly salary<a class="headerlink" href="#claim-1-difference-in-monthly-salary" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;MonthlyIncome&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Attrition&#39;</span><span class="p">,</span> <span class="n">histnorm</span><span class="o">=</span><span class="s1">&#39;probability&#39;</span><span class="p">,</span> <span class="n">marginal</span><span class="o">=</span><span class="s1">&#39;rug&#39;</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>At lower incomes the probability of attrition is higher while the trend reverses at the higher range of salaries. Above the value of 11k, the proabability see a sharp decrease. After 14k, the probability of attrition literally diminishes to 0 before picking up lower values at 19k to 20k.</p>
+<p>For the given case, the null hypothesis and the alternate hypothesis can be framed as -<br />
+<span class="math notranslate nohighlight">\(H_0\)</span> : The difference between the mean salaries for for people who leave and for people who stay is 0.<br />
+<span class="math notranslate nohighlight">\(H_1\)</span>: There is difference in the mean salaries.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tstat</span><span class="p">,</span> <span class="n">tpvalue</span> <span class="o">=</span> <span class="n">ttest_ind</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s1">&#39;MonthlyIncome&#39;</span><span class="p">],</span> <span class="n">nattr</span><span class="p">[</span><span class="s1">&#39;MonthlyIncome&#39;</span><span class="p">],</span> <span class="n">equal_var</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T Statistic for the test is </span><span class="si">{</span><span class="n">tstat</span><span class="si">}</span><span class="s2">, and the p-value is </span><span class="si">{</span><span class="n">tpvalue</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>T Statistic for the test is -7.482621586644742, and the p-value is 4.433588628286071e-13
+</pre></div>
+</div>
+</div>
+</div>
+<p>Choosing alpha of 5%, the p-value of the test is too small as compare to 0.05 and hence the null hypothesis is rejected. This signiffies that the there is difference between the salaries for the people who leave the company and people who stay.</p>
+<div class="section" id="claim-2-difference-in-percentage-of-hike-in-salary">
+<h2>Claim 2 - Difference in percentage of hike in salary”<a class="headerlink" href="#claim-2-difference-in-percentage-of-hike-in-salary" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;PercentSalaryHike&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Attrition&#39;</span><span class="p">,</span> <span class="n">marginal</span><span class="o">=</span><span class="s1">&#39;rug&#39;</span><span class="p">,</span> <span class="n">histnorm</span><span class="o">=</span><span class="s1">&#39;probability&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
 </div>
 </div>
 <p>There seems to be no significant difference in probability for attrition in terms of difference in salary hike. People does not seem to care for recent salary hikes which considering for a shift.</p>
+<p>For the given case, the null hypothesis and the alternate hypothesis can be framed as -<br />
+<span class="math notranslate nohighlight">\(H_0\)</span>: There is no difference between the mean percent salary hike for the two groups of interest.<br />
+<span class="math notranslate nohighlight">\(H_1\)</span>: There is difference between the mean percent salary hike for the groups of interest.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tstat</span><span class="p">,</span> <span class="n">tpvalue</span> <span class="o">=</span> <span class="n">ttest_ind</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s1">&#39;PercentSalaryHike&#39;</span><span class="p">],</span> <span class="n">nattr</span><span class="p">[</span><span class="s1">&#39;PercentSalaryHike&#39;</span><span class="p">],</span> <span class="n">equal_var</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T Statistic for the test is </span><span class="si">{</span><span class="n">tstat</span><span class="si">}</span><span class="s2">, and the p-value is </span><span class="si">{</span><span class="n">tpvalue</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>T Statistic for the test is -0.5042445352368612, and the p-value is 0.6144300580581377
+</pre></div>
+</div>
+</div>
+</div>
+<p>Again choosing the alpha of 5%, the p-value is greate than 0.05. This signifies that there is no difference between the mean salary hike for the people who leave the company and the people who stay.</p>
+</div>
+<div class="section" id="claim-3-frequent-travelling">
+<h2>Claim 3 - Frequent travelling<a class="headerlink" href="#claim-3-frequent-travelling" title="Permalink to this headline">¶</a></h2>
+<p>For performing, we first need the contingency table which is the count of category for each group of target variable.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">travel_contingency</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Attrition&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;BusinessTravel&#39;</span><span class="p">])</span>
+<span class="n">travel_contingency</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>BusinessTravel</th>
+      <th>Non-Travel</th>
+      <th>Travel_Frequently</th>
+      <th>Travel_Rarely</th>
+    </tr>
+    <tr>
+      <th>Attrition</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>No</th>
+      <td>138</td>
+      <td>208</td>
+      <td>887</td>
+    </tr>
+    <tr>
+      <th>Yes</th>
+      <td>12</td>
+      <td>69</td>
+      <td>156</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>For the case at hand, the null hypothesis and the alternate hypothesis can be framed as -<br />
+<span class="math notranslate nohighlight">\(H_0\)</span>: There is no relationship between attrition and business travel<br />
+<span class="math notranslate nohighlight">\(H_1\)</span>: There is relationship between attrition and business travel</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stat</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">expected</span> <span class="o">=</span> <span class="n">chi2_contingency</span><span class="p">(</span><span class="n">travel_contingency</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The chi-squared test statistics is </span><span class="si">{</span><span class="n">stat</span><span class="si">}</span><span class="s2"> with p-value as </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The chi-squared test statistics is 24.182413685655174 with p-value as 5.608614476449931e-06
+</pre></div>
+</div>
+</div>
+</div>
+<p>Considering an alpha of 5%, the p-value is too small as compared to 0.05 and hence the null hypothesis is rejected. To forward the result in words, there is relationship between the variable attrition and business travel.</p>
+</div>
+<div class="section" id="claim-4-overtime">
+<h2>Claim 4 - Overtime<a class="headerlink" href="#claim-4-overtime" title="Permalink to this headline">¶</a></h2>
+<p>Starting with the contingency table for the case at hand.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time_contingency</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Attrition&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;OverTime&#39;</span><span class="p">])</span>
+<span class="n">time_contingency</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>OverTime</th>
+      <th>No</th>
+      <th>Yes</th>
+    </tr>
+    <tr>
+      <th>Attrition</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>No</th>
+      <td>944</td>
+      <td>289</td>
+    </tr>
+    <tr>
+      <th>Yes</th>
+      <td>110</td>
+      <td>127</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>For this scenario, the null hypothesis and the alternate hypothesis can be framed as -<br />
+<span class="math notranslate nohighlight">\(H_0\)</span>: There is no relationship between attrition and overtime<br />
+<span class="math notranslate nohighlight">\(H_1\)</span>: There is relationship between attrition and overtime</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stat</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">expected</span> <span class="o">=</span> <span class="n">chi2_contingency</span><span class="p">(</span><span class="n">time_contingency</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The chi-squared test statistics is </span><span class="si">{</span><span class="n">stat</span><span class="si">}</span><span class="s2"> with p-value as </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The chi-squared test statistics is 87.56429365828768 with p-value as 8.15842372153832e-21
+</pre></div>
+</div>
+</div>
+</div>
+<p>Again considering the alpha of 5%, the p-value is too small as compared to 0.05 and hence the null hypothesis can be rejected. This means that there is some relationship between attrition and overtime.</p>
+</div>
 </div>
 
     <script type="text/x-thebe-config">

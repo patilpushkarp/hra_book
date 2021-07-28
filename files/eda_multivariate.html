@@ -273,7 +273,8 @@
 <h1>Exploratory Data Analysis - Multivariate Analysis<a class="headerlink" href="#exploratory-data-analysis-multivariate-analysis" title="Permalink to this headline">¶</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the required packages</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
@@ -285,7 +286,8 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./../../../data/cleaned_data.csv&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./../../../data/cleaned_data.csv&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -370,7 +372,7 @@ Years at current company, years in current role. years since last promotion and 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.PairGrid at 0x1697cfac0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.PairGrid at 0x135a84c70&gt;
 </pre></div>
 </div>
 <img alt="../_images/eda_multivariate_15_1.png" src="../_images/eda_multivariate_15_1.png" />
@@ -423,7 +425,7 @@ Name: Attrition, dtype: int64
 </div>
 <div class="cell_output docutils container">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": "e2e376de48c94fb587fe2334fdcf1b98"}
+{"version_major": 2, "version_minor": 0, "model_id": "72f283c33abe4acbaf2fb915bf73778b"}
 </script><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;function __main__.function_numerical_attrition(column)&gt;
 </pre></div>
 </div>
@@ -449,7 +451,7 @@ Name: Attrition, dtype: int64
 </div>
 <div class="cell_output docutils container">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": "a82d8a21f6c440b5a2837d20a26cc878"}
+{"version_major": 2, "version_minor": 0, "model_id": "fbc9d32abd2541679736880e1e49fc6c"}
 </script><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;function __main__.function_categorical_attrition(column)&gt;
 </pre></div>
 </div>

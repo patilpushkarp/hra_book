@@ -51,8 +51,11 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Bibliography" href="../references.html" />
+    <link rel="prev" title="Exploratory Data Analysis - Multivariate Analysis" href="eda_multivariate.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -104,7 +107,7 @@
   Data Understanding
  </span>
 </p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="data_introduction.html">
    Dataset Introduction
@@ -118,6 +121,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="eda_multivariate.html">
    Exploratory Data Analysis - Multivariate Analysis
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Hypothesis tests
   </a>
  </li>
 </ul>
@@ -236,32 +244,25 @@
             </div>
             <nav id="bd-toc-nav">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   Hypothesis tests
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#claim-1-difference-in-monthly-salary">
    Claim 1 - Difference in monthly salary
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#claim-2-difference-in-percentage-of-hike-in-salary">
-     Claim 2 - Difference in percentage of hike in salary”
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#claim-3-frequent-travelling">
-     Claim 3 - Frequent travelling
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#claim-4-overtime">
-     Claim 4 - Overtime
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#claim-2-difference-in-percentage-of-hike-in-salary">
+   Claim 2 - Difference in percentage of hike in salary”
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#claim-3-frequent-travelling">
+   Claim 3 - Frequent travelling
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#claim-4-overtime">
+   Claim 4 - Overtime
+  </a>
  </li>
 </ul>
 
@@ -284,6 +285,8 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">ttest_ind</span><span class="p">,</span> <span class="n">chi2_contingency</span>
+<span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
+<span class="n">pio</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;vscode&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -323,9 +326,8 @@
 <li><p>Frequent travelling for employees results in attrition.</p></li>
 <li><p>Overtime results in attrition.</p></li>
 </ol>
-</div>
 <div class="section" id="claim-1-difference-in-monthly-salary">
-<h1>Claim 1 - Difference in monthly salary<a class="headerlink" href="#claim-1-difference-in-monthly-salary" title="Permalink to this headline">¶</a></h1>
+<h2>Claim 1 - Difference in monthly salary<a class="headerlink" href="#claim-1-difference-in-monthly-salary" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;MonthlyIncome&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Attrition&#39;</span><span class="p">,</span> <span class="n">histnorm</span><span class="o">=</span><span class="s1">&#39;probability&#39;</span><span class="p">,</span> <span class="n">marginal</span><span class="o">=</span><span class="s1">&#39;rug&#39;</span><span class="p">)</span>
@@ -354,6 +356,7 @@
 </div>
 </div>
 <p>Choosing alpha of 5%, the p-value of the test is too small as compare to 0.05 and hence the null hypothesis is rejected. This signiffies that the there is difference between the salaries for the people who leave the company and people who stay.</p>
+</div>
 <div class="section" id="claim-2-difference-in-percentage-of-hike-in-salary">
 <h2>Claim 2 - Difference in percentage of hike in salary”<a class="headerlink" href="#claim-2-difference-in-percentage-of-hike-in-salary" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
@@ -558,6 +561,8 @@
         
         <div class='prev-next-bottom'>
             
+    <a class='left-prev' id="prev-link" href="eda_multivariate.html" title="previous page">Exploratory Data Analysis - Multivariate Analysis</a>
+    <a class='right-next' id="next-link" href="../references.html" title="next page">Bibliography</a>
 
         </div>
         

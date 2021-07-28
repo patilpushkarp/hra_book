@@ -13,6 +13,8 @@ parts:
     - file: files/eda_univariate.ipynb
     - file: files/eda_multivariate.ipynb
     - file: files/hypo_test.ipynb
+  - caption: Data Preprocessing
+    - file: files/data_preprocessing.ipynb
   - caption: References
     chapters:
     - file: references.md

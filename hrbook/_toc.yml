@@ -12,6 +12,7 @@ parts:
     - file: files/data_introduction.ipynb
     - file: files/eda_univariate.ipynb
     - file: files/eda_multivariate.ipynb
+    - file: files/hypo_test.ipynb
   - caption: References
     chapters:
     - file: references.md

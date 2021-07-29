@@ -247,6 +247,60 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Feature Selection
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#filter-based-methods">
+   Filter-based methods
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#high-correlation-filter">
+     High Correlation Filter
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#correlation">
+       Correlation
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#univariate-selection-methods">
+     Univariate Selection Methods
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#selectkbest-using-f-classif">
+       SelectKBest using f_classif
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#selectkbest-using-chi-square">
+       SelectKBest using chi square
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#selectkbest-using-mutual-information">
+       SelectKBest using mutual information
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -266,14 +320,211 @@ Feature selection can be:</p>
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the packages</span>
-
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the packages</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">SelectKBest</span><span class="p">,</span> <span class="n">RFECV</span><span class="p">,</span> <span class="n">SequentialFeatureSelector</span><span class="p">,</span> <span class="n">SelectFromModel</span>
 <span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">chi2</span><span class="p">,</span> <span class="n">f_classif</span><span class="p">,</span> <span class="n">mutual_info_classif</span>
 <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
 <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
 </pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./../../../data/train/train.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let us assume that out of 53 colums that are available we want around 30 columns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Declare the number of features required</span>
+<span class="n">n_feat</span> <span class="o">=</span> <span class="mi">30</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Separate out the data into features and target variable</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Attrition&#39;</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Attrition&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="filter-based-methods">
+<h1>Filter-based methods<a class="headerlink" href="#filter-based-methods" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="high-correlation-filter">
+<h2>High Correlation Filter<a class="headerlink" href="#high-correlation-filter" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="correlation">
+<h3>Correlation<a class="headerlink" href="#correlation" title="Permalink to this headline">¶</a></h3>
+<p>Starting with our first method first-based method which is dependent on correlation, we eliminate columns whose correlation coefficients is greater than 0.75.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create correlation matrix</span>
+<span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+
+<span class="c1"># Select upper triangle of correlation matrix</span>
+<span class="n">upper</span> <span class="o">=</span> <span class="n">corr_matrix</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">corr_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">))</span>
+
+<span class="c1"># Find features with correlation greater than 0.75</span>
+<span class="n">to_drop</span> <span class="o">=</span> <span class="p">[</span><span class="n">column</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">upper</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">upper</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.75</span><span class="p">)]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Columns to be dropped: </span><span class="si">{</span><span class="n">to_drop</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Columns to be dropped: [&#39;TotalWorkingYears&#39;, &#39;YearsInCurrentRole&#39;, &#39;YearsWithCurrManager&#39;, &#39;JobLevel&#39;, &#39;PerformanceRating&#39;, &#39;Department Sales&#39;, &#39;Gender Male&#39;, &#39;JobRole Human Resources&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a resulting dataframe for the output</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span> <span class="k">if</span> <span class="n">column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">to_drop</span> <span class="k">else</span> <span class="kc">False</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
+<span class="n">correlation</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Correlation&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">correlation</span><span class="p">[</span><span class="s1">&#39;Correlation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="univariate-selection-methods">
+<h2>Univariate Selection Methods<a class="headerlink" href="#univariate-selection-methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="selectkbest-using-f-classif">
+<h3>SelectKBest using f_classif<a class="headerlink" href="#selectkbest-using-f-classif" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Declare the transformer</span>
+<span class="n">f_class_selector</span> <span class="o">=</span> <span class="n">SelectKBest</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">n_feat</span><span class="p">)</span>
+<span class="n">f_class_selector</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SelectKBest(k=30)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the features from the support</span>
+<span class="n">f_class_support</span> <span class="o">=</span> <span class="n">f_class_selector</span><span class="o">.</span><span class="n">get_support</span><span class="p">()</span>
+<span class="n">f_class_features</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">f_class_support</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Feature select with f classif: </span><span class="si">{</span><span class="n">f_class_features</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Feature select with f classif: [&#39;Age&#39;, &#39;DailyRate&#39;, &#39;DistanceFromHome&#39;, &#39;MonthlyIncome&#39;, &#39;TotalWorkingYears&#39;, &#39;YearsAtCompany&#39;, &#39;YearsInCurrentRole&#39;, &#39;YearsWithCurrManager&#39;, &#39;EnvironmentSatisfaction&#39;, &#39;JobInvolvement&#39;, &#39;JobLevel&#39;, &#39;JobSatisfaction&#39;, &#39;OverTime&#39;, &#39;StockOptionLevel&#39;, &#39;BusinessTravel Non-Travel&#39;, &#39;BusinessTravel Travel_Rarely&#39;, &#39;Department Human Resources&#39;, &#39;Department Research &amp; Development&#39;, &#39;EducationField Life Sciences&#39;, &#39;EducationField Medical&#39;, &#39;EducationField Other&#39;, &#39;Gender Female&#39;, &#39;JobRole Healthcare Representative&#39;, &#39;JobRole Manager&#39;, &#39;JobRole Manufacturing Director&#39;, &#39;JobRole Research Director&#39;, &#39;JobRole Sales Representative&#39;, &#39;MaritalStatus Divorced&#39;, &#39;MaritalStatus Married&#39;, &#39;MaritalStatus Single&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Store the result in dataframe</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span> <span class="k">if</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">f_class_features</span> <span class="k">else</span> <span class="kc">False</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
+<span class="n">f_class_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;F classif&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">f_class_df</span><span class="p">[</span><span class="s1">&#39;F classif&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="selectkbest-using-chi-square">
+<h3>SelectKBest using chi square<a class="headerlink" href="#selectkbest-using-chi-square" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Declare the transformer</span>
+<span class="n">chi2</span> <span class="o">=</span> <span class="n">SelectKBest</span><span class="p">(</span><span class="n">chi2</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">n_feat</span><span class="p">)</span>
+<span class="n">chi2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SelectKBest(k=30, score_func=&lt;function chi2 at 0x1466c5a60&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the features from the support</span>
+<span class="n">chi2_support</span> <span class="o">=</span> <span class="n">chi2</span><span class="o">.</span><span class="n">get_support</span><span class="p">()</span>
+<span class="n">chi2_features</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">chi2_support</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Features selected with chi2: </span><span class="si">{</span><span class="n">chi2_features</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Features selected with chi2: [&#39;Age&#39;, &#39;MonthlyIncome&#39;, &#39;TotalWorkingYears&#39;, &#39;YearsAtCompany&#39;, &#39;YearsInCurrentRole&#39;, &#39;YearsWithCurrManager&#39;, &#39;EnvironmentSatisfaction&#39;, &#39;JobInvolvement&#39;, &#39;JobLevel&#39;, &#39;JobSatisfaction&#39;, &#39;OverTime&#39;, &#39;StockOptionLevel&#39;, &#39;BusinessTravel Non-Travel&#39;, &#39;BusinessTravel Travel_Rarely&#39;, &#39;Department Human Resources&#39;, &#39;Department Research &amp; Development&#39;, &#39;EducationField Life Sciences&#39;, &#39;EducationField Medical&#39;, &#39;EducationField Other&#39;, &#39;EducationField Technical Degree&#39;, &#39;Gender Female&#39;, &#39;JobRole Healthcare Representative&#39;, &#39;JobRole Human Resources&#39;, &#39;JobRole Manager&#39;, &#39;JobRole Manufacturing Director&#39;, &#39;JobRole Research Director&#39;, &#39;JobRole Sales Representative&#39;, &#39;MaritalStatus Divorced&#39;, &#39;MaritalStatus Married&#39;, &#39;MaritalStatus Single&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Store the result in dataframe</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span> <span class="k">if</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">chi2_features</span> <span class="k">else</span> <span class="kc">False</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
+<span class="n">f_class_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Chi2&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">f_class_df</span><span class="p">[</span><span class="s1">&#39;Chi2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="selectkbest-using-mutual-information">
+<h3>SelectKBest using mutual information<a class="headerlink" href="#selectkbest-using-mutual-information" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Declare the transformer</span>
+<span class="n">mutual_info</span> <span class="o">=</span> <span class="n">SelectKBest</span><span class="p">(</span><span class="n">mutual_info_classif</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">n_feat</span><span class="p">)</span>
+<span class="n">mutual_info</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SelectKBest(k=30, score_func=&lt;function mutual_info_classif at 0x146e72700&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the features from the support</span>
+<span class="n">mutual_info_support</span> <span class="o">=</span> <span class="n">mutual_info</span><span class="o">.</span><span class="n">get_support</span><span class="p">()</span>
+<span class="n">mutual_info_features</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">mutual_info_support</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Store the result in dataframe</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span> <span class="k">if</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">mutual_info_features</span> <span class="k">else</span> <span class="kc">False</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
+<span class="n">f_class_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Mutual Informtion&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">f_class_df</span><span class="p">[</span><span class="s1">&#39;Mutual Informtion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 </div>

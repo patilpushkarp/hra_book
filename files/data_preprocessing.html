@@ -271,7 +271,17 @@
      Categorical columns
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#merge-preprocessed-data">
+     Merge preprocessed data
+    </a>
+   </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#handling-outliers">
+   Handling Outliers
+  </a>
  </li>
 </ul>
 
@@ -291,9 +301,13 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import packages</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OrdinalEncoder</span><span class="p">,</span> <span class="n">OneHotEncoder</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OrdinalEncoder</span>
+<span class="kn">from</span> <span class="nn">sklearn.covariance</span> <span class="kn">import</span> <span class="n">EllipticEnvelope</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">IsolationForest</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">LocalOutlierFactor</span>
 </pre></div>
 </div>
 </div>
@@ -344,6 +358,18 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1176, 31)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Seggregate the data into numerical and categorical variable for training data</span>
 <span class="n">num_df_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">numerical_columns</span><span class="p">]</span>
 <span class="n">cat_df_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">categorical_columns</span><span class="p">]</span>
@@ -374,6 +400,15 @@ X' = \frac{X - X_{min}}{X_{max} - X_{min}}
 <span class="n">transformer</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
 <span class="n">num_df_train</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">num_df_train</span><span class="p">)</span>
 <span class="n">num_df_test</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">num_df_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert the numpy arrays to dataframe</span>
+<span class="n">num_df_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">num_df_train</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">numerical_columns</span><span class="p">)</span>
+<span class="n">num_df_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">num_df_test</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">numerical_columns</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -427,11 +462,168 @@ X' = \frac{X - X_{min}}{X_{max} - X_{min}}
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ohc</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">()</span>
-<span class="n">onehot_cat_df_train</span> <span class="o">=</span> <span class="n">ohc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">cat_df_train</span><span class="p">[</span><span class="n">one_hot_columns</span><span class="p">])</span>
-<span class="n">onehot_cat_df_test</span> <span class="o">=</span> <span class="n">ohc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">cat_df_test</span><span class="p">[</span><span class="n">one_hot_columns</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Covert the numpy array to dataframe</span>
+<span class="n">ordinal_cat_df_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">ordinal_cat_df_train</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">ordinal_columns</span><span class="p">)</span>
+<span class="n">ordinal_cat_df_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">ordinal_cat_df_test</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">ordinal_columns</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply One-hot Encoder</span>
+<span class="n">onehot_cat_df_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">one_hot_columns</span><span class="p">:</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">cat_df_train</span><span class="p">[</span><span class="n">column</span><span class="p">])</span>
+    <span class="n">onehot_cat_df_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">onehot_cat_df_train</span><span class="p">,</span> <span class="n">temp</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">onehot_cat_df_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">one_hot_columns</span><span class="p">:</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">cat_df_test</span><span class="p">[</span><span class="n">column</span><span class="p">])</span>
+    <span class="n">onehot_cat_df_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">onehot_cat_df_test</span><span class="p">,</span> <span class="n">temp</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="merge-preprocessed-data">
+<h3>Merge preprocessed data<a class="headerlink" href="#merge-preprocessed-data" title="Permalink to this headline">¶</a></h3>
+<p>Before merging all the data together, it is better to check the length of individual data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the length of the training data</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Length of numerical data: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">num_df_train</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Length of ordinal categorical data: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ordinal_cat_df_train</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Length of one-hot encoded columns data: </span><span class="si">{</span><span class="n">onehot_cat_df_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Length of numerical data: 1176
+Length of ordinal categorical data: 1176
+Length of one-hot encoded columns data: 1176
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the length of the testing data</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Length of numerical data: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">num_df_test</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Length of ordinal categorical data: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ordinal_cat_df_test</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Length of one-hot encoded columns data: </span><span class="si">{</span><span class="n">onehot_cat_df_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Length of numerical data: 294
+Length of ordinal categorical data: 294
+Length of one-hot encoded columns data: 294
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since all the length match together, the data can be merged together.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Merge the data</span>
+<span class="n">train_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">num_df_train</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> <span class="n">ordinal_cat_df_train</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> <span class="n">onehot_cat_df_train</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">num_df_test</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> <span class="n">ordinal_cat_df_test</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> <span class="n">onehot_cat_df_test</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Checking upon the final shape of both the dataframes</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The shape of training data is: </span><span class="si">{</span><span class="n">train_df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The shape of testing data is: </span><span class="si">{</span><span class="n">test_df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The shape of training data is: (1176, 54)
+The shape of testing data is: (294, 54)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="handling-outliers">
+<h2>Handling Outliers<a class="headerlink" href="#handling-outliers" title="Permalink to this headline">¶</a></h2>
+<p>Outliers are the observations which does not fit well with the dataset. These observations are errors during the recording process. Outliers does not find place in the pattern that exist in the dataset and hence in order to reduce their influence on the outcome it is better to either treat them or remove them. Since we cannot correct the values of such data now, we will be resorting to remove them.</p>
+<p>To remove outliers, it is necessary to detect them first. We will be utilizing various methods to detect the outliers and then combine the results of those methods to get the final set for removal. There will be 3 methods that will be used -</p>
+<ol class="simple">
+<li><p>Robust Covariance</p></li>
+<li><p>Isolation Forest</p></li>
+<li><p>Local Outlier Factor</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the algorithms</span>
+<span class="n">rob_cov</span> <span class="o">=</span> <span class="n">EllipticEnvelope</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="n">iso_fst</span> <span class="o">=</span> <span class="n">IsolationForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">lof</span> <span class="o">=</span> <span class="n">LocalOutlierFactor</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the outliers using each method</span>
+<span class="n">y_pred_rob_cov</span> <span class="o">=</span> <span class="n">rob_cov</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">train_df</span><span class="p">)</span>
+<span class="n">y_pred_iso_fst</span> <span class="o">=</span> <span class="n">iso_fst</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">train_df</span><span class="p">)</span>
+<span class="n">y_pred_lof</span> <span class="o">=</span> <span class="n">lof</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">train_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/pushkar/miniforge3/envs/hra/lib/python3.8/site-packages/sklearn/covariance/_robust_covariance.py:647: UserWarning: The covariance matrix associated to your dataset is not full rank
+  warnings.warn(&quot;The covariance matrix associated to your dataset &quot;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a dataframe for the result</span>
+<span class="n">y_pred_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Robust Covariance&#39;</span><span class="p">,</span> <span class="s1">&#39;Isolation Forest&#39;</span><span class="p">,</span> <span class="s1">&#39;Local Outlier Factor&#39;</span><span class="p">])</span>
+<span class="n">y_pred_df</span><span class="p">[</span><span class="s1">&#39;Robust Covariance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_pred_rob_cov</span>
+<span class="n">y_pred_df</span><span class="p">[</span><span class="s1">&#39;Isolation Forest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_pred_iso_fst</span>
+<span class="n">y_pred_df</span><span class="p">[</span><span class="s1">&#39;Local Outlier Factor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_pred_lof</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the indexes of observations for which are marked as outlier by majority of algorithm</span>
+<span class="n">y_pred_df</span><span class="p">[</span><span class="s1">&#39;Total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_pred_df</span><span class="p">[</span><span class="s1">&#39;Robust Covariance&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">y_pred_df</span><span class="p">[</span><span class="s1">&#39;Isolation Forest&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">y_pred_df</span><span class="p">[</span><span class="s1">&#39;Local Outlier Factor&#39;</span><span class="p">]</span>
+<span class="n">y_pred_df</span><span class="p">[</span><span class="s1">&#39;Outlier&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_pred_df</span><span class="p">[</span><span class="s1">&#39;Total&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total outliers detected: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">y_pred_df</span><span class="p">[</span><span class="n">y_pred_df</span><span class="p">[</span><span class="s1">&#39;Outlier&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total outliers detected: 26
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since the total outliers detected are very few, it would be safe for us to remove them. Though we lose information after removing the outliers but that will not harm our results to greater extent.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove outliers from the training data</span>
+<span class="n">outleir_index</span> <span class="o">=</span> <span class="n">y_pred_df</span><span class="p">[</span><span class="n">y_pred_df</span><span class="p">[</span><span class="s1">&#39;Outlier&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
+<span class="n">train_df</span> <span class="o">=</span> <span class="n">train_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">outleir_index</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 </div>

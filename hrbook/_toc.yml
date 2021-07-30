@@ -16,6 +16,7 @@ parts:
   - caption: Data Preprocessing
     chapters:
     - file: files/data_preprocessing.ipynb
+    - file: files/feature_selection.ipynb
   - caption: References
     chapters:
     - file: references.md

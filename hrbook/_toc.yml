@@ -17,6 +17,12 @@ parts:
     chapters:
     - file: files/data_preprocessing.ipynb
     - file: files/feature_selection.ipynb
+  - caption: Data Modelling
+    chapters:
+    - file: files/models/logistic_regression.ipynb
+    - file: files/models/random_forest.ipynb
+    - file: files/models/decision_tree.ipynb
+    - file: files/models/adaboost.ipynb
   - caption: References
     chapters:
     - file: references.md

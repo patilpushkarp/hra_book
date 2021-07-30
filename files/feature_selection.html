@@ -52,6 +52,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Bibliography" href="../references.html" />
+    <link rel="prev" title="Data Preprocessing" href="data_preprocessing.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -130,10 +132,15 @@
   Data Preprocessing
  </span>
 </p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="data_preprocessing.html">
    Data Preprocessing
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Feature Selection
   </a>
  </li>
 </ul>
@@ -296,6 +303,45 @@
      </li>
     </ul>
    </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#wrapper-methods">
+     Wrapper Methods
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#recursive-feature-elimination">
+       Recursive Feature Elimination
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#sequential-feature-selector">
+       Sequential Feature Selector
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#embedded-methods">
+     Embedded Methods
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#lasso-regression">
+       LASSO Regression
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#random-forest">
+       Random Forest
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#combined-result">
+     Combined Result
+    </a>
+   </li>
   </ul>
  </li>
 </ul>
@@ -326,8 +372,8 @@ Feature selection can be:</p>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">SelectKBest</span><span class="p">,</span> <span class="n">RFECV</span><span class="p">,</span> <span class="n">SequentialFeatureSelector</span><span class="p">,</span> <span class="n">SelectFromModel</span>
-<span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">chi2</span><span class="p">,</span> <span class="n">f_classif</span><span class="p">,</span> <span class="n">mutual_info_classif</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">SelectKBest</span><span class="p">,</span> <span class="n">RFE</span><span class="p">,</span> <span class="n">SequentialFeatureSelector</span><span class="p">,</span> <span class="n">SelectFromModel</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">chi2</span><span class="p">,</span> <span class="n">mutual_info_classif</span>
 <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
 <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
 </pre></div>
@@ -458,7 +504,7 @@ Feature selection can be:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SelectKBest(k=30, score_func=&lt;function chi2 at 0x1466c5a60&gt;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SelectKBest(k=30, score_func=&lt;function chi2 at 0x1238bca60&gt;)
 </pre></div>
 </div>
 </div>
@@ -483,8 +529,8 @@ Feature selection can be:</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Store the result in dataframe</span>
 <span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
 <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span> <span class="k">if</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">chi2_features</span> <span class="k">else</span> <span class="kc">False</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
-<span class="n">f_class_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Chi2&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
-<span class="n">f_class_df</span><span class="p">[</span><span class="s1">&#39;Chi2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+<span class="n">chi2_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Chi2&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">chi2_df</span><span class="p">[</span><span class="s1">&#39;Chi2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
 </pre></div>
 </div>
 </div>
@@ -501,7 +547,7 @@ Feature selection can be:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SelectKBest(k=30, score_func=&lt;function mutual_info_classif at 0x146e72700&gt;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SelectKBest(k=30, score_func=&lt;function mutual_info_classif at 0x123f31700&gt;)
 </pre></div>
 </div>
 </div>
@@ -520,10 +566,888 @@ Feature selection can be:</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Store the result in dataframe</span>
 <span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
 <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span> <span class="k">if</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">mutual_info_features</span> <span class="k">else</span> <span class="kc">False</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
-<span class="n">f_class_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Mutual Informtion&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
-<span class="n">f_class_df</span><span class="p">[</span><span class="s1">&#39;Mutual Informtion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+<span class="n">mi_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Mutual Informtion&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">mi_df</span><span class="p">[</span><span class="s1">&#39;Mutual Informtion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
 </pre></div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="wrapper-methods">
+<h2>Wrapper Methods<a class="headerlink" href="#wrapper-methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="recursive-feature-elimination">
+<h3>Recursive Feature Elimination<a class="headerlink" href="#recursive-feature-elimination" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Declare the transformer</span>
+<span class="n">rfe_selector</span> <span class="o">=</span> <span class="n">RFE</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">LogisticRegression</span><span class="p">(),</span> <span class="n">n_features_to_select</span><span class="o">=</span><span class="n">n_feat</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">rfe_selector</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RFE(estimator=LogisticRegression(), n_features_to_select=30, step=3)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the features from support</span>
+<span class="n">rfe_support</span> <span class="o">=</span> <span class="n">rfe_selector</span><span class="o">.</span><span class="n">get_support</span><span class="p">()</span>
+<span class="n">rfe_features</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">rfe_support</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Feature selected with RFE for Logistic Regression: </span><span class="si">{</span><span class="n">rfe_features</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Feature selected with RFE for Logistic Regression: [&#39;Age&#39;, &#39;NumCompaniesWorked&#39;, &#39;TotalWorkingYears&#39;, &#39;YearsInCurrentRole&#39;, &#39;YearsSinceLastPromotion&#39;, &#39;YearsWithCurrManager&#39;, &#39;OverTime&#39;, &#39;BusinessTravel Non-Travel&#39;, &#39;BusinessTravel Travel_Frequently&#39;, &#39;BusinessTravel Travel_Rarely&#39;, &#39;Department Human Resources&#39;, &#39;Department Research &amp; Development&#39;, &#39;Department Sales&#39;, &#39;EducationField Human Resources&#39;, &#39;EducationField Life Sciences&#39;, &#39;EducationField Marketing&#39;, &#39;EducationField Medical&#39;, &#39;EducationField Other&#39;, &#39;EducationField Technical Degree&#39;, &#39;Gender Female&#39;, &#39;Gender Male&#39;, &#39;JobRole Healthcare Representative&#39;, &#39;JobRole Human Resources&#39;, &#39;JobRole Manager&#39;, &#39;JobRole Manufacturing Director&#39;, &#39;JobRole Research Director&#39;, &#39;JobRole Research Scientist&#39;, &#39;MaritalStatus Divorced&#39;, &#39;MaritalStatus Married&#39;, &#39;MaritalStatus Single&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span> <span class="k">if</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">rfe_features</span> <span class="k">else</span> <span class="kc">False</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
+<span class="n">rfe_lr_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;RFE LR&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">rfe_lr_df</span><span class="p">[</span><span class="s1">&#39;RFE LR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="sequential-feature-selector">
+<h3>Sequential Feature Selector<a class="headerlink" href="#sequential-feature-selector" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Declare the transformer</span>
+<span class="n">sfs_selector</span> <span class="o">=</span> <span class="n">SequentialFeatureSelector</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">LogisticRegression</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">),</span> <span class="n">n_features_to_select</span><span class="o">=</span><span class="n">n_feat</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;backward&#39;</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;f1&#39;</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sfs_selector</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SequentialFeatureSelector(direction=&#39;backward&#39;,
+                          estimator=LogisticRegression(max_iter=1000),
+                          n_features_to_select=30, n_jobs=-1, scoring=&#39;f1&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the features from the ssupport</span>
+<span class="n">sfs_support</span> <span class="o">=</span> <span class="n">sfs_selector</span><span class="o">.</span><span class="n">get_support</span><span class="p">()</span>
+<span class="n">sfs_features</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">sfs_support</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Features selected with Sequential Feature Selector: </span><span class="si">{</span><span class="n">sfs_features</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Features selected with Sequential Feature Selector: [&#39;Age&#39;, &#39;DistanceFromHome&#39;, &#39;MonthlyRate&#39;, &#39;NumCompaniesWorked&#39;, &#39;YearsInCurrentRole&#39;, &#39;YearsSinceLastPromotion&#39;, &#39;YearsWithCurrManager&#39;, &#39;Education&#39;, &#39;EnvironmentSatisfaction&#39;, &#39;JobInvolvement&#39;, &#39;JobSatisfaction&#39;, &#39;OverTime&#39;, &#39;BusinessTravel Non-Travel&#39;, &#39;BusinessTravel Travel_Rarely&#39;, &#39;Department Research &amp; Development&#39;, &#39;EducationField Human Resources&#39;, &#39;EducationField Life Sciences&#39;, &#39;EducationField Marketing&#39;, &#39;EducationField Medical&#39;, &#39;EducationField Other&#39;, &#39;EducationField Technical Degree&#39;, &#39;JobRole Healthcare Representative&#39;, &#39;JobRole Human Resources&#39;, &#39;JobRole Manager&#39;, &#39;JobRole Manufacturing Director&#39;, &#39;JobRole Research Director&#39;, &#39;JobRole Research Scientist&#39;, &#39;JobRole Sales Executive&#39;, &#39;MaritalStatus Divorced&#39;, &#39;MaritalStatus Married&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span> <span class="k">if</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">sfs_features</span> <span class="k">else</span> <span class="kc">False</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
+<span class="n">sfs_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SFS LR&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">sfs_df</span><span class="p">[</span><span class="s1">&#39;SFS LR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="embedded-methods">
+<h2>Embedded Methods<a class="headerlink" href="#embedded-methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="lasso-regression">
+<h3>LASSO Regression<a class="headerlink" href="#lasso-regression" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Declare the transformer</span>
+<span class="n">lasso_selector</span> <span class="o">=</span> <span class="n">SelectFromModel</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">LogisticRegression</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;saga&#39;</span><span class="p">),</span> <span class="n">max_features</span><span class="o">=</span><span class="n">n_feat</span><span class="p">)</span>
+<span class="n">lasso_selector</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SelectFromModel(estimator=LogisticRegression(C=1, penalty=&#39;l1&#39;, solver=&#39;saga&#39;),
+                max_features=30)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the features from the support</span>
+<span class="n">lasso_support</span> <span class="o">=</span> <span class="n">lasso_selector</span><span class="o">.</span><span class="n">get_support</span><span class="p">()</span>
+<span class="n">lasso_features</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">lasso_support</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Features selected from Lasso Model: </span><span class="si">{</span><span class="n">lasso_features</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Features selected from Lasso Model: [&#39;Age&#39;, &#39;DistanceFromHome&#39;, &#39;NumCompaniesWorked&#39;, &#39;TotalWorkingYears&#39;, &#39;YearsInCurrentRole&#39;, &#39;YearsSinceLastPromotion&#39;, &#39;YearsWithCurrManager&#39;, &#39;OverTime&#39;, &#39;BusinessTravel Non-Travel&#39;, &#39;BusinessTravel Travel_Frequently&#39;, &#39;BusinessTravel Travel_Rarely&#39;, &#39;Department Human Resources&#39;, &#39;EducationField Human Resources&#39;, &#39;EducationField Life Sciences&#39;, &#39;EducationField Marketing&#39;, &#39;EducationField Medical&#39;, &#39;EducationField Other&#39;, &#39;EducationField Technical Degree&#39;, &#39;Gender Female&#39;, &#39;Gender Male&#39;, &#39;JobRole Healthcare Representative&#39;, &#39;JobRole Laboratory Technician&#39;, &#39;JobRole Manager&#39;, &#39;JobRole Manufacturing Director&#39;, &#39;JobRole Research Director&#39;, &#39;JobRole Research Scientist&#39;, &#39;JobRole Sales Executive&#39;, &#39;MaritalStatus Divorced&#39;, &#39;MaritalStatus Married&#39;, &#39;MaritalStatus Single&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span> <span class="k">if</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">lasso_features</span> <span class="k">else</span> <span class="kc">False</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
+<span class="n">lasso_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Lasso&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">lasso_df</span><span class="p">[</span><span class="s1">&#39;Lasso&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>No features are selected by Lasso regression.</p>
+</div>
+<div class="section" id="random-forest">
+<h3>Random Forest<a class="headerlink" href="#random-forest" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Declare the transformer</span>
+<span class="n">rf_selector</span> <span class="o">=</span> <span class="n">SelectFromModel</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">RandomForestClassifier</span><span class="p">(),</span> <span class="n">max_features</span><span class="o">=</span><span class="n">n_feat</span><span class="p">)</span>
+<span class="n">rf_selector</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SelectFromModel(estimator=RandomForestClassifier(), max_features=30)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the features</span>
+<span class="n">rf_support</span> <span class="o">=</span> <span class="n">rfe_selector</span><span class="o">.</span><span class="n">get_support</span><span class="p">()</span>
+<span class="n">rf_features</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">rfe_support</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Features selected from Random Forest Classifier: </span><span class="si">{</span><span class="n">rfe_features</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Features selected from Random Forest Classifier: [&#39;Age&#39;, &#39;NumCompaniesWorked&#39;, &#39;TotalWorkingYears&#39;, &#39;YearsInCurrentRole&#39;, &#39;YearsSinceLastPromotion&#39;, &#39;YearsWithCurrManager&#39;, &#39;OverTime&#39;, &#39;BusinessTravel Non-Travel&#39;, &#39;BusinessTravel Travel_Frequently&#39;, &#39;BusinessTravel Travel_Rarely&#39;, &#39;Department Human Resources&#39;, &#39;Department Research &amp; Development&#39;, &#39;Department Sales&#39;, &#39;EducationField Human Resources&#39;, &#39;EducationField Life Sciences&#39;, &#39;EducationField Marketing&#39;, &#39;EducationField Medical&#39;, &#39;EducationField Other&#39;, &#39;EducationField Technical Degree&#39;, &#39;Gender Female&#39;, &#39;Gender Male&#39;, &#39;JobRole Healthcare Representative&#39;, &#39;JobRole Human Resources&#39;, &#39;JobRole Manager&#39;, &#39;JobRole Manufacturing Director&#39;, &#39;JobRole Research Director&#39;, &#39;JobRole Research Scientist&#39;, &#39;MaritalStatus Divorced&#39;, &#39;MaritalStatus Married&#39;, &#39;MaritalStatus Single&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span> <span class="k">if</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">rfe_features</span> <span class="k">else</span> <span class="kc">False</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
+<span class="n">rf_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;RF&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">rf_df</span><span class="p">[</span><span class="s1">&#39;RF&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="combined-result">
+<h2>Combined Result<a class="headerlink" href="#combined-result" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Combine all the result dataframes</span>
+<span class="n">res_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">correlation</span><span class="p">,</span> <span class="n">f_class_df</span><span class="p">,</span> <span class="n">chi2_df</span><span class="p">,</span> <span class="n">mi_df</span><span class="p">,</span> <span class="n">rfe_lr_df</span><span class="p">,</span> <span class="n">sfs_df</span><span class="p">,</span> <span class="n">lasso_df</span><span class="p">,</span> <span class="n">rf_df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the total votes for each features based on the different methods</span>
+<span class="n">res_df</span><span class="p">[</span><span class="s1">&#39;Total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">res_df</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sort the resultant dataframe based on votes</span>
+<span class="n">res_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Total&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Correlation</th>
+      <th>F classif</th>
+      <th>Chi2</th>
+      <th>Mutual Informtion</th>
+      <th>RFE LR</th>
+      <th>SFS LR</th>
+      <th>Lasso</th>
+      <th>RF</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Age</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>MaritalStatus Married</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>MaritalStatus Divorced</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>BusinessTravel Non-Travel</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>EducationField Medical</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>OverTime</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>JobRole Manufacturing Director</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>YearsWithCurrManager</th>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>Department Research &amp; Development</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>BusinessTravel Travel_Rarely</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>EducationField Other</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>JobRole Healthcare Representative</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>EducationField Life Sciences</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>YearsInCurrentRole</th>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>JobRole Manager</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>JobRole Research Director</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>YearsSinceLastPromotion</th>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>Department Human Resources</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>MaritalStatus Single</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>EducationField Marketing</th>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>NumCompaniesWorked</th>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>EducationField Technical Degree</th>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>Gender Female</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>TotalWorkingYears</th>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>JobSatisfaction</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>JobRole Research Scientist</th>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>JobInvolvement</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>EnvironmentSatisfaction</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>EducationField Human Resources</th>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>DistanceFromHome</th>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>JobRole Human Resources</th>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>BusinessTravel Travel_Frequently</th>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>YearsAtCompany</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>StockOptionLevel</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>MonthlyIncome</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>JobRole Sales Representative</th>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Gender Male</th>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>JobLevel</th>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Education</th>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>JobRole Sales Executive</th>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>DailyRate</th>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>PercentSalaryHike</th>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>HourlyRate</th>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>MonthlyRate</th>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>Department Sales</th>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>TrainingTimesLastYear</th>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>JobRole Laboratory Technician</th>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>RelationshipSatisfaction</th>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>WorkLifeBalance</th>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>PerformanceRating</th>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>EmployeeNumber</th>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Attrition</th>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Store the result</span>
+<span class="n">res_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;./../../../data/feature_ranking.csv&#39;</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 </div>
@@ -555,6 +1479,8 @@ Feature selection can be:</p>
         
         <div class='prev-next-bottom'>
             
+    <a class='left-prev' id="prev-link" href="data_preprocessing.html" title="previous page">Data Preprocessing</a>
+    <a class='right-next' id="next-link" href="../references.html" title="next page">Bibliography</a>
 
         </div>
         

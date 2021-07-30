@@ -52,7 +52,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Bibliography" href="../references.html" />
+    <link rel="next" title="Logistic Regression" href="models/logistic_regression.html" />
     <link rel="prev" title="Data Preprocessing" href="data_preprocessing.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -141,6 +141,33 @@
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    Feature Selection
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data Modelling
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="models/logistic_regression.html">
+   Logistic Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models/random_forest.html">
+   Random Forest Classifier
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models/decision_tree.html">
+   Random Forest Classifier
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models/adaboost.html">
+   Random Forest Classifier
   </a>
  </li>
 </ul>
@@ -259,90 +286,85 @@
             </div>
             <nav id="bd-toc-nav">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   Feature Selection
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#filter-based-methods">
    Filter-based methods
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#high-correlation-filter">
      High Correlation Filter
     </a>
     <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#correlation">
        Correlation
       </a>
      </li>
     </ul>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#univariate-selection-methods">
      Univariate Selection Methods
     </a>
     <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#selectkbest-using-f-classif">
        SelectKBest using f_classif
       </a>
      </li>
-     <li class="toc-h3 nav-item toc-entry">
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#selectkbest-using-chi-square">
        SelectKBest using chi square
       </a>
      </li>
-     <li class="toc-h3 nav-item toc-entry">
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#selectkbest-using-mutual-information">
        SelectKBest using mutual information
       </a>
      </li>
     </ul>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#wrapper-methods">
-     Wrapper Methods
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#wrapper-methods">
+   Wrapper Methods
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#recursive-feature-elimination">
+     Recursive Feature Elimination
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#recursive-feature-elimination">
-       Recursive Feature Elimination
-      </a>
-     </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#sequential-feature-selector">
-       Sequential Feature Selector
-      </a>
-     </li>
-    </ul>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#embedded-methods">
-     Embedded Methods
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#lasso-regression">
-       LASSO Regression
-      </a>
-     </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#random-forest">
-       Random Forest
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#combined-result">
-     Combined Result
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sequential-feature-selector">
+     Sequential Feature Selector
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#embedded-methods">
+   Embedded Methods
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lasso-regression">
+     LASSO Regression
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#random-forest">
+     Random Forest
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#combined-result">
+   Combined Result
+  </a>
  </li>
 </ul>
 
@@ -406,13 +428,12 @@ Feature selection can be:</p>
 </div>
 </div>
 </div>
-</div>
 <div class="section" id="filter-based-methods">
-<h1>Filter-based methods<a class="headerlink" href="#filter-based-methods" title="Permalink to this headline">¶</a></h1>
+<h2>Filter-based methods<a class="headerlink" href="#filter-based-methods" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="high-correlation-filter">
-<h2>High Correlation Filter<a class="headerlink" href="#high-correlation-filter" title="Permalink to this headline">¶</a></h2>
+<h3>High Correlation Filter<a class="headerlink" href="#high-correlation-filter" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="correlation">
-<h3>Correlation<a class="headerlink" href="#correlation" title="Permalink to this headline">¶</a></h3>
+<h4>Correlation<a class="headerlink" href="#correlation" title="Permalink to this headline">¶</a></h4>
 <p>Starting with our first method first-based method which is dependent on correlation, we eliminate columns whose correlation coefficients is greater than 0.75.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -449,9 +470,9 @@ Feature selection can be:</p>
 </div>
 </div>
 <div class="section" id="univariate-selection-methods">
-<h2>Univariate Selection Methods<a class="headerlink" href="#univariate-selection-methods" title="Permalink to this headline">¶</a></h2>
+<h3>Univariate Selection Methods<a class="headerlink" href="#univariate-selection-methods" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="selectkbest-using-f-classif">
-<h3>SelectKBest using f_classif<a class="headerlink" href="#selectkbest-using-f-classif" title="Permalink to this headline">¶</a></h3>
+<h4>SelectKBest using f_classif<a class="headerlink" href="#selectkbest-using-f-classif" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Declare the transformer</span>
@@ -494,7 +515,7 @@ Feature selection can be:</p>
 </div>
 </div>
 <div class="section" id="selectkbest-using-chi-square">
-<h3>SelectKBest using chi square<a class="headerlink" href="#selectkbest-using-chi-square" title="Permalink to this headline">¶</a></h3>
+<h4>SelectKBest using chi square<a class="headerlink" href="#selectkbest-using-chi-square" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Declare the transformer</span>
@@ -537,7 +558,7 @@ Feature selection can be:</p>
 </div>
 </div>
 <div class="section" id="selectkbest-using-mutual-information">
-<h3>SelectKBest using mutual information<a class="headerlink" href="#selectkbest-using-mutual-information" title="Permalink to this headline">¶</a></h3>
+<h4>SelectKBest using mutual information<a class="headerlink" href="#selectkbest-using-mutual-information" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Declare the transformer</span>
@@ -569,6 +590,7 @@ Feature selection can be:</p>
 <span class="n">mi_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Mutual Informtion&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
 <span class="n">mi_df</span><span class="p">[</span><span class="s1">&#39;Mutual Informtion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
 </pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -1480,7 +1502,7 @@ Feature selection can be:</p>
         <div class='prev-next-bottom'>
             
     <a class='left-prev' id="prev-link" href="data_preprocessing.html" title="previous page">Data Preprocessing</a>
-    <a class='right-next' id="next-link" href="../references.html" title="next page">Bibliography</a>
+    <a class='right-next' id="next-link" href="models/logistic_regression.html" title="next page">Logistic Regression</a>
 
         </div>
         
